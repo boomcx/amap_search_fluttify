@@ -4,8 +4,9 @@ class PoiX {
   static Future<Poi> fromAndroid(com_amap_api_services_core_PoiItem poi) async {
     final address = await poi.getSnippet();
     final title = await poi.getTitle();
-    final latLng = await (poi.getLatLonPoint()
-        as FutureOr<com_amap_api_services_core_LatLonPoint>);
+    final latLng =
+        await (poi.getLatLonPoint()
+            as FutureOr<com_amap_api_services_core_LatLonPoint>);
     final latitude = await (latLng.getLatitude() as FutureOr<double>);
     final longitude = await (latLng.getLongitude() as FutureOr<double>);
     final cityName = await poi.getCityName();
@@ -92,7 +93,7 @@ class RoadListX {
           distance: distanceBatch[i],
           direction: directionBatch[i],
           coordinate: LatLng(latitudeBatch[i]!, longitudeBatch[i]!),
-        )
+        ),
     ];
   }
 
@@ -114,7 +115,7 @@ class RoadListX {
           distance: distanceBatch[i]!.toDouble(),
           direction: directionBatch[i],
           coordinate: LatLng(latitudeBatch[i]!, longitudeBatch[i]!),
-        )
+        ),
     ];
   }
 }
@@ -140,7 +141,7 @@ class AoiListX {
           id: idBatch[i],
           name: nameBatch[i],
           centerPoint: LatLng(latitudeBatch[i]!, longitudeBatch[i]!),
-        )
+        ),
     ];
   }
 
@@ -162,7 +163,7 @@ class AoiListX {
           id: idBatch[i],
           name: nameBatch[i],
           centerPoint: LatLng(latitudeBatch[i]!, longitudeBatch[i]!),
-        )
+        ),
     ];
   }
 }
@@ -203,7 +204,7 @@ class PoiListX {
           distance: distanceBatch[i],
           adName: adNameBatch[i],
           adCode: adCodeBatch[i],
-        )
+        ),
     ];
   }
 
@@ -240,7 +241,7 @@ class PoiListX {
           distance: distanceBatch[i],
           adName: adNameBatch[i],
           adCode: adCodeBatch[i],
-        )
+        ),
     ];
   }
 }
@@ -254,8 +255,18 @@ class InputTipListX {
     final addressBatch = await inputTipList.getAddress_batch();
     final districtBatch = await inputTipList.getDistrict_batch();
     final coordinateBatch = await inputTipList.getPoint_batch();
-    final latitudeBatch = await coordinateBatch.getLatitude_batch();
-    final longitudeBatch = await coordinateBatch.getLongitude_batch();
+    final List<double?> latitudeBatch = [];
+    final List<double?> longitudeBatch = [];
+    for (int i = 0; i < coordinateBatch.length; i++) {
+      final coord = coordinateBatch[i];
+      if (coord != null) {
+        latitudeBatch.add(await coord.getLatitude());
+        longitudeBatch.add(await coord.getLongitude());
+      } else {
+        latitudeBatch.add(null);
+        longitudeBatch.add(null);
+      }
+    }
 
     return <InputTip>[
       for (int i = 0; i < inputTipList.length; i++)
@@ -267,7 +278,7 @@ class InputTipListX {
           coordinate: latitudeBatch[i] == null || longitudeBatch[i] == null
               ? null
               : LatLng(latitudeBatch[i]!, longitudeBatch[i]!),
-        )
+        ),
     ];
   }
 
@@ -277,8 +288,18 @@ class InputTipListX {
     final addressBatch = await inputTipList.get_address_batch();
     final districtBatch = await inputTipList.get_district_batch();
     final coordinateBatch = await inputTipList.get_location_batch();
-    final latitudeBatch = await coordinateBatch.get_latitude_batch();
-    final longitudeBatch = await coordinateBatch.get_longitude_batch();
+    final List<double?> latitudeBatch = [];
+    final List<double?> longitudeBatch = [];
+    for (int i = 0; i < coordinateBatch.length; i++) {
+      final coord = coordinateBatch[i];
+      if (coord != null) {
+        latitudeBatch.add(await coord.get_latitude());
+        longitudeBatch.add(await coord.get_longitude());
+      } else {
+        latitudeBatch.add(null);
+        longitudeBatch.add(null);
+      }
+    }
 
     return <InputTip>[
       for (int i = 0; i < inputTipList.length; i++)
@@ -290,7 +311,7 @@ class InputTipListX {
           coordinate: latitudeBatch[i] == null || longitudeBatch[i] == null
               ? null
               : LatLng(latitudeBatch[i]!, longitudeBatch[i]!),
-        )
+        ),
     ];
   }
 }

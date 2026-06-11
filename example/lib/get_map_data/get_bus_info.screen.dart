@@ -1,12 +1,14 @@
 import 'package:amap_search_fluttify/amap_search_fluttify.dart';
 import 'package:amap_search_fluttify_example/widgets/scrollable_text.widget.dart';
-import 'package:decorated_flutter/decorated_flutter.dart';
 import 'package:flutter/material.dart';
 
-/// 获取公交数据
+import '../widgets/dimens.dart';
+
 class GetBusInfoScreen extends StatefulWidget {
+  const GetBusInfoScreen({super.key});
+
   @override
-  _GetBusInfoScreenState createState() => _GetBusInfoScreenState();
+  State<GetBusInfoScreen> createState() => _GetBusInfoScreenState();
 }
 
 class _GetBusInfoScreenState extends State<GetBusInfoScreen> {
@@ -20,30 +22,32 @@ class _GetBusInfoScreenState extends State<GetBusInfoScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(title: const Text('获取公交数据')),
-      body: DecoratedColumn(
+      body: Padding(
         padding: const EdgeInsets.all(kSpace16),
-        children: <Widget>[
-          TextFormField(
-            controller: _keywordController,
-            decoration: const InputDecoration(hintText: '输入公交站点名称'),
-          ),
-          TextFormField(
-            controller: _cityController,
-            decoration: const InputDecoration(hintText: '输入城市'),
-          ),
-          RaisedButton(
-            onPressed: () async {
-              final busStation = await AmapSearch.instance.searchBusStation(
-                stationName: _keywordController.text,
-                city: _cityController.text,
-              );
-              _busStation = await busStation.toFutureString();
-              setState(() {});
-            },
-            child: const Text('搜索'),
-          ),
-          Expanded(child: ScrollableText(_busStation)),
-        ],
+        child: Column(
+          children: <Widget>[
+            TextFormField(
+              controller: _keywordController,
+              decoration: const InputDecoration(hintText: '输入公交站点名称'),
+            ),
+            TextFormField(
+              controller: _cityController,
+              decoration: const InputDecoration(hintText: '输入城市'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                final busStation = await AmapSearch.instance.searchBusStation(
+                  stationName: _keywordController.text,
+                  city: _cityController.text,
+                );
+                _busStation = await busStation.toFutureString();
+                setState(() {});
+              },
+              child: const Text('搜索'),
+            ),
+            Expanded(child: ScrollableText(_busStation)),
+          ],
+        ),
       ),
     );
   }

@@ -1,12 +1,14 @@
 import 'package:amap_search_fluttify/amap_search_fluttify.dart';
 import 'package:core_location_fluttify/core_location_fluttify.dart';
-import 'package:decorated_flutter/decorated_flutter.dart';
 import 'package:flutter/material.dart';
 
-/// 公交路线规划
+import '../widgets/dimens.dart';
+
 class RouteBusScreen extends StatefulWidget {
+  const RouteBusScreen({super.key});
+
   @override
-  _RouteBusScreenState createState() => _RouteBusScreenState();
+  State<RouteBusScreen> createState() => _RouteBusScreenState();
 }
 
 class _RouteBusScreenState extends State<RouteBusScreen> {
@@ -23,74 +25,78 @@ class _RouteBusScreenState extends State<RouteBusScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(title: const Text('公交路线规划')),
-      body: DecoratedColumn(
+      body: Padding(
         padding: const EdgeInsets.all(kSpace16),
-        children: <Widget>[
-          DecoratedRow(
-            itemSpacing: kSpace8,
-            children: <Widget>[
-              const Text('起点:'),
-              Flexible(
-                child: TextFormField(
-                  controller: _fromLatController,
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(hintText: '输入出发点纬度'),
+        child: Column(
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                const Text('起点:'),
+                const SizedBox(width: kSpace8),
+                Flexible(
+                  child: TextFormField(
+                    controller: _fromLatController,
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(hintText: '输入出发点纬度'),
+                  ),
                 ),
-              ),
-              Flexible(
-                child: TextFormField(
-                  controller: _fromLngController,
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(hintText: '输入出发点经度'),
+                const SizedBox(width: kSpace8),
+                Flexible(
+                  child: TextFormField(
+                    controller: _fromLngController,
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(hintText: '输入出发点经度'),
+                  ),
                 ),
-              ),
-            ],
-          ),
-          DecoratedRow(
-            itemSpacing: kSpace8,
-            children: <Widget>[
-              const Text('终点:'),
-              Flexible(
-                child: TextFormField(
-                  controller: _toLatController,
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(hintText: '输入终点纬度'),
-                ),
-              ),
-              Flexible(
-                child: TextFormField(
-                  controller: _toLngController,
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(hintText: '输入终点经度'),
-                ),
-              ),
-            ],
-          ),
-          RaisedButton(
-            onPressed: () async {
-              final routeResult = await AmapSearch.instance.searchBusRoute(
-                from: LatLng(
-                  double.parse(_fromLatController.text),
-                  double.parse(_fromLngController.text),
-                ),
-                to: LatLng(
-                  double.parse(_toLatController.text),
-                  double.parse(_toLngController.text),
-                ),
-                city: '杭州',
-              );
-              routeResult
-                  .toFutureString()
-                  .then((it) => setState(() => _routeResult = it));
-            },
-            child: const Text('搜索'),
-          ),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Text(_routeResult),
+              ],
             ),
-          ),
-        ],
+            Row(
+              children: <Widget>[
+                const Text('终点:'),
+                const SizedBox(width: kSpace8),
+                Flexible(
+                  child: TextFormField(
+                    controller: _toLatController,
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(hintText: '输入终点纬度'),
+                  ),
+                ),
+                const SizedBox(width: kSpace8),
+                Flexible(
+                  child: TextFormField(
+                    controller: _toLngController,
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(hintText: '输入终点经度'),
+                  ),
+                ),
+              ],
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                final routeResult = await AmapSearch.instance.searchBusRoute(
+                  from: LatLng(
+                    double.parse(_fromLatController.text),
+                    double.parse(_fromLngController.text),
+                  ),
+                  to: LatLng(
+                    double.parse(_toLatController.text),
+                    double.parse(_toLngController.text),
+                  ),
+                  city: '杭州',
+                );
+                routeResult
+                    .toFutureString()
+                    .then((it) => setState(() => _routeResult = it));
+              },
+              child: const Text('搜索'),
+            ),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Text(_routeResult),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

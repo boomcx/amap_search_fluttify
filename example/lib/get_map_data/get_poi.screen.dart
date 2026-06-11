@@ -2,10 +2,13 @@ import 'package:amap_search_fluttify/amap_search_fluttify.dart';
 import 'package:amap_search_fluttify_example/widgets/function_item.widget.dart';
 import 'package:amap_search_fluttify_example/widgets/scrollable_text.widget.dart';
 import 'package:core_location_fluttify/core_location_fluttify.dart';
-import 'package:decorated_flutter/decorated_flutter.dart';
 import 'package:flutter/material.dart';
 
+import '../widgets/dimens.dart';
+
 class GetPoiScreen extends StatelessWidget {
+  const GetPoiScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,10 +37,11 @@ class GetPoiScreen extends StatelessWidget {
   }
 }
 
-/// 关键字检索POI
 class KeywordPoiScreen extends StatefulWidget {
+  const KeywordPoiScreen({super.key});
+
   @override
-  _KeywordPoiScreenState createState() => _KeywordPoiScreenState();
+  State<KeywordPoiScreen> createState() => _KeywordPoiScreenState();
 }
 
 class _KeywordPoiScreenState extends State<KeywordPoiScreen> {
@@ -52,55 +56,58 @@ class _KeywordPoiScreenState extends State<KeywordPoiScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(title: const Text('关键字检索POI')),
-      body: DecoratedColumn(
+      body: Padding(
         padding: const EdgeInsets.all(kSpace16),
-        children: <Widget>[
-          TextFormField(
-            controller: _keywordController,
-            decoration: const InputDecoration(hintText: '输入关键字'),
-          ),
-          TextFormField(
-            controller: _cityController,
-            decoration: const InputDecoration(hintText: '输入城市'),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              final poiList = await AmapSearch.instance.searchKeyword(
-                _keywordController.text,
-                city: _cityController.text,
-              );
+        child: Column(
+          children: <Widget>[
+            TextFormField(
+              controller: _keywordController,
+              decoration: const InputDecoration(hintText: '输入关键字'),
+            ),
+            TextFormField(
+              controller: _cityController,
+              decoration: const InputDecoration(hintText: '输入城市'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                final poiList = await AmapSearch.instance.searchKeyword(
+                  _keywordController.text,
+                  city: _cityController.text,
+                );
 
-              setState(() {
-                _poiTitleList = poiList.map((it) => it.toString()).toList();
-              });
-            },
-            child: const Text('搜索'),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              final poiList = await AmapSearch.instance.searchKeyword(
-                _keywordController.text,
-                city: _cityController.text,
-                page: ++_page,
-              );
+                setState(() {
+                  _poiTitleList = poiList.map((it) => it.toString()).toList();
+                });
+              },
+              child: const Text('搜索'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                final poiList = await AmapSearch.instance.searchKeyword(
+                  _keywordController.text,
+                  city: _cityController.text,
+                  page: ++_page,
+                );
 
-              setState(() {
-                _poiTitleList = poiList.map((it) => it.toString()).toList();
-              });
-            },
-            child: const Text('下一页'),
-          ),
-          Expanded(child: ScrollableText(_poiTitleList.join("\n"))),
-        ],
+                setState(() {
+                  _poiTitleList = poiList.map((it) => it.toString()).toList();
+                });
+              },
+              child: const Text('下一页'),
+            ),
+            Expanded(child: ScrollableText(_poiTitleList.join("\n"))),
+          ],
+        ),
       ),
     );
   }
 }
 
-/// 附近检索POI
 class AroundPoiScreen extends StatefulWidget {
+  const AroundPoiScreen({super.key});
+
   @override
-  _AroundPoiScreenState createState() => _AroundPoiScreenState();
+  State<AroundPoiScreen> createState() => _AroundPoiScreenState();
 }
 
 class _AroundPoiScreenState extends State<AroundPoiScreen> {
@@ -117,80 +124,83 @@ class _AroundPoiScreenState extends State<AroundPoiScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(title: const Text('周边检索POI')),
-      body: DecoratedColumn(
+      body: Padding(
         padding: const EdgeInsets.all(kSpace16),
-        children: <Widget>[
-          TextFormField(
-            controller: _keywordController,
-            decoration: const InputDecoration(hintText: '输入关键字'),
-          ),
-          TextFormField(
-            controller: _typeController,
-            decoration: const InputDecoration(hintText: '输入类别'),
-          ),
-          DecoratedRow(
-            children: <Widget>[
-              Flexible(
-                child: TextField(
-                  controller: _latController,
-                  decoration: const InputDecoration(hintText: '输入纬度'),
+        child: Column(
+          children: <Widget>[
+            TextFormField(
+              controller: _keywordController,
+              decoration: const InputDecoration(hintText: '输入关键字'),
+            ),
+            TextFormField(
+              controller: _typeController,
+              decoration: const InputDecoration(hintText: '输入类别'),
+            ),
+            Row(
+              children: <Widget>[
+                Flexible(
+                  child: TextField(
+                    controller: _latController,
+                    decoration: const InputDecoration(hintText: '输入纬度'),
+                  ),
                 ),
-              ),
-              SPACE_4_HORIZONTAL,
-              Flexible(
-                child: TextField(
-                  controller: _lngController,
-                  decoration: const InputDecoration(hintText: '输入经度'),
+                SPACE_4_HORIZONTAL,
+                Flexible(
+                  child: TextField(
+                    controller: _lngController,
+                    decoration: const InputDecoration(hintText: '输入经度'),
+                  ),
                 ),
-              ),
-            ],
-          ),
-          RaisedButton(
-            onPressed: () async {
-              final poiList = await AmapSearch.instance.searchAround(
-                LatLng(
-                  double.tryParse(_latController.text) ?? 29.08,
-                  double.tryParse(_lngController.text) ?? 119.65,
-                ),
-                keyword: _keywordController.text,
-                type: _typeController.text,
-              );
+              ],
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                final poiList = await AmapSearch.instance.searchAround(
+                  LatLng(
+                    double.tryParse(_latController.text) ?? 29.08,
+                    double.tryParse(_lngController.text) ?? 119.65,
+                  ),
+                  keyword: _keywordController.text,
+                  type: _typeController.text,
+                );
 
-              setState(() {
-                _poiTitleList = poiList.map((it) => it.toString()).toList();
-              });
-            },
-            child: const Text('搜索'),
-          ),
-          RaisedButton(
-            onPressed: () async {
-              final poiList = await AmapSearch.instance.searchAround(
-                LatLng(
-                  double.tryParse(_latController.text) ?? 29.08,
-                  double.tryParse(_lngController.text) ?? 119.65,
-                ),
-                keyword: _keywordController.text,
-                type: _typeController.text,
-                page: ++_page,
-              );
+                setState(() {
+                  _poiTitleList = poiList.map((it) => it.toString()).toList();
+                });
+              },
+              child: const Text('搜索'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                final poiList = await AmapSearch.instance.searchAround(
+                  LatLng(
+                    double.tryParse(_latController.text) ?? 29.08,
+                    double.tryParse(_lngController.text) ?? 119.65,
+                  ),
+                  keyword: _keywordController.text,
+                  type: _typeController.text,
+                  page: ++_page,
+                );
 
-              setState(() {
-                _poiTitleList = poiList.map((it) => it.toString()).toList();
-              });
-            },
-            child: const Text('下一页'),
-          ),
-          Expanded(child: ScrollableText(_poiTitleList.join("\n"))),
-        ],
+                setState(() {
+                  _poiTitleList = poiList.map((it) => it.toString()).toList();
+                });
+              },
+              child: const Text('下一页'),
+            ),
+            Expanded(child: ScrollableText(_poiTitleList.join("\n"))),
+          ],
+        ),
       ),
     );
   }
 }
 
-/// 输入提示
 class InputTipScreen extends StatefulWidget {
+  const InputTipScreen({super.key});
+
   @override
-  _InputTipScreenState createState() => _InputTipScreenState();
+  State<InputTipScreen> createState() => _InputTipScreenState();
 }
 
 class _InputTipScreenState extends State<InputTipScreen> {
@@ -204,30 +214,32 @@ class _InputTipScreenState extends State<InputTipScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(title: const Text('输入内容自动提示')),
-      body: DecoratedColumn(
+      body: Padding(
         padding: const EdgeInsets.all(kSpace16),
-        children: <Widget>[
-          TextFormField(
-            controller: _keywordController,
-            decoration: const InputDecoration(hintText: '输入关键字'),
-          ),
-          TextFormField(
-            controller: _cityController,
-            decoration: const InputDecoration(hintText: '输入所在城市'),
-          ),
-          RaisedButton(
-            onPressed: () async {
-              final inputTipList = await AmapSearch.instance.fetchInputTips(
-                _keywordController.text,
-                city: _cityController.text,
-              );
+        child: Column(
+          children: <Widget>[
+            TextFormField(
+              controller: _keywordController,
+              decoration: const InputDecoration(hintText: '输入关键字'),
+            ),
+            TextFormField(
+              controller: _cityController,
+              decoration: const InputDecoration(hintText: '输入所在城市'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                final inputTipList = await AmapSearch.instance.fetchInputTips(
+                  _keywordController.text,
+                  city: _cityController.text,
+                );
 
-              setState(() => _inputTipList = inputTipList);
-            },
-            child: const Text('搜索'),
-          ),
-          Expanded(child: ScrollableText(_inputTipList.join("\n"))),
-        ],
+                setState(() => _inputTipList = inputTipList);
+              },
+              child: const Text('搜索'),
+            ),
+            Expanded(child: ScrollableText(_inputTipList.join("\n"))),
+          ],
+        ),
       ),
     );
   }

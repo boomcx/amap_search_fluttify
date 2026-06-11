@@ -1,17 +1,23 @@
-import 'package:decorated_flutter/decorated_flutter.dart';
 import 'package:flutter/material.dart';
 
 class FutureText extends StatelessWidget {
-  const FutureText(this.data, {Key? key}) : super(key: key);
+  const FutureText(this.data, {super.key});
 
   final Future<String> data;
 
   @override
   Widget build(BuildContext context) {
-    return SingleSubscriber<String>(
+    return FutureBuilder<String>(
       future: data,
-      showLoading: false,
-      builder: (data) => Text(data),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const SizedBox.shrink();
+        }
+        if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        }
+        return Text(snapshot.data ?? '');
+      },
     );
   }
 }

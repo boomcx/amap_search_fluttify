@@ -21,12 +21,14 @@ void main() async {
   await AmapSearch.instance.updatePrivacyShow(true);
   await AmapSearch.instance.updatePrivacyAgree(true);
 
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
   @override
-  _MyAppState createState() => _MyAppState();
+  State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
@@ -37,9 +39,7 @@ class _MyAppState extends State<MyApp> {
 }
 
 class Home extends StatelessWidget {
-  const Home({
-    Key? key,
-  }) : super(key: key);
+  const Home({super.key});
 
   @override
   Widget build(BuildContext context) {

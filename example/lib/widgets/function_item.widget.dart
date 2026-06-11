@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 class FunctionItem extends StatelessWidget {
   const FunctionItem({
-    Key? key,
+    super.key,
     required this.label,
     required this.sublabel,
     required this.target,
-  }) : super(key: key);
+  });
 
   final String label;
   final String sublabel;

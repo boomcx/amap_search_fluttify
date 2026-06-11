@@ -1,10 +1,13 @@
 import 'package:amap_search_fluttify/amap_search_fluttify.dart';
 import 'package:amap_search_fluttify_example/widgets/function_item.widget.dart';
 import 'package:core_location_fluttify/core_location_fluttify.dart';
-import 'package:decorated_flutter/decorated_flutter.dart';
 import 'package:flutter/material.dart';
 
+import '../widgets/dimens.dart';
+
 class GetAddressDescScreen extends StatelessWidget {
+  const GetAddressDescScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -12,7 +15,7 @@ class GetAddressDescScreen extends StatelessWidget {
       appBar: AppBar(title: const Text('获取地址描述数据')),
       body: ListView(
         children: <Widget>[
-          const FunctionItem(
+          FunctionItem(
             label: '地理编码（地址转坐标）',
             sublabel: 'AddressEncodeScreen',
             target: AddressEncodeScreen(),
@@ -28,12 +31,11 @@ class GetAddressDescScreen extends StatelessWidget {
   }
 }
 
-/// 地理编码（地址转坐标）
 class AddressEncodeScreen extends StatefulWidget {
-  const AddressEncodeScreen({Key? key}) : super(key: key);
+  const AddressEncodeScreen({super.key});
 
   @override
-  _AddressEncodeScreenState createState() => _AddressEncodeScreenState();
+  State<AddressEncodeScreen> createState() => _AddressEncodeScreenState();
 }
 
 class _AddressEncodeScreenState extends State<AddressEncodeScreen> {
@@ -47,40 +49,43 @@ class _AddressEncodeScreenState extends State<AddressEncodeScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(title: const Text('地理编码（地址转坐标）')),
-      body: DecoratedColumn(
+      body: Padding(
         padding: const EdgeInsets.all(kSpace16),
-        children: <Widget>[
-          TextFormField(
-            controller: _keywordController,
-            decoration: const InputDecoration(hintText: '输入关键字'),
-          ),
-          TextFormField(
-            controller: _cityController,
-            decoration: const InputDecoration(hintText: '输入城市'),
-          ),
-          RaisedButton(
-            onPressed: () async {
-              final geocodeList = await AmapSearch.instance.searchGeocode(
-                _keywordController.text,
-                city: _cityController.text,
-              );
-              setState(() {
-                _geocodeList = geocodeList;
-              });
-            },
-            child: const Text('搜索'),
-          ),
-          if (_geocodeList.isNotEmpty) Text(_geocodeList.toString()),
-        ],
+        child: Column(
+          children: <Widget>[
+            TextFormField(
+              controller: _keywordController,
+              decoration: const InputDecoration(hintText: '输入关键字'),
+            ),
+            TextFormField(
+              controller: _cityController,
+              decoration: const InputDecoration(hintText: '输入城市'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                final geocodeList = await AmapSearch.instance.searchGeocode(
+                  _keywordController.text,
+                  city: _cityController.text,
+                );
+                setState(() {
+                  _geocodeList = geocodeList;
+                });
+              },
+              child: const Text('搜索'),
+            ),
+            if (_geocodeList.isNotEmpty) Text(_geocodeList.toString()),
+          ],
+        ),
       ),
     );
   }
 }
 
-/// 逆地理编码（坐标转地址）
 class AddressDecodeScreen extends StatefulWidget {
+  const AddressDecodeScreen({super.key});
+
   @override
-  _AddressDecodeScreenState createState() => _AddressDecodeScreenState();
+  State<AddressDecodeScreen> createState() => _AddressDecodeScreenState();
 }
 
 class _AddressDecodeScreenState extends State<AddressDecodeScreen> {
@@ -95,50 +100,53 @@ class _AddressDecodeScreenState extends State<AddressDecodeScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(title: const Text('逆地理编码（坐标转地址）')),
-      body: DecoratedColumn(
+      body: Padding(
         padding: const EdgeInsets.all(kSpace16),
-        children: <Widget>[
-          DecoratedRow(
-            children: <Widget>[
-              Flexible(
-                child: TextFormField(
-                  controller: _latController,
-                  decoration: const InputDecoration(hintText: '输入纬度'),
+        child: Column(
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                Flexible(
+                  child: TextFormField(
+                    controller: _latController,
+                    decoration: const InputDecoration(hintText: '输入纬度'),
+                  ),
                 ),
-              ),
-              Flexible(
-                child: TextFormField(
-                  controller: _lngController,
-                  decoration: const InputDecoration(hintText: '输入经度'),
+                const SizedBox(width: kSpace8),
+                Flexible(
+                  child: TextFormField(
+                    controller: _lngController,
+                    decoration: const InputDecoration(hintText: '输入经度'),
+                  ),
                 ),
-              ),
-            ],
-          ),
-          TextFormField(
-            controller: _radiusController,
-            decoration: const InputDecoration(hintText: '输入范围半径'),
-          ),
-          RaisedButton(
-            onPressed: () async {
-              final reGeocodeList = await AmapSearch.instance.searchReGeocode(
-                LatLng(
-                  double.parse(_latController.text),
-                  double.parse(_lngController.text),
-                ),
-                radius: 200.0,
-              );
-              setState(() {
-                _reGeocode = reGeocodeList;
-              });
-            },
-            child: const Text('搜索'),
-          ),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Text(_reGeocode?.toString() ?? ''),
+              ],
             ),
-          ),
-        ],
+            TextFormField(
+              controller: _radiusController,
+              decoration: const InputDecoration(hintText: '输入范围半径'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                final reGeocodeList = await AmapSearch.instance.searchReGeocode(
+                  LatLng(
+                    double.parse(_latController.text),
+                    double.parse(_lngController.text),
+                  ),
+                  radius: 200.0,
+                );
+                setState(() {
+                  _reGeocode = reGeocodeList;
+                });
+              },
+              child: const Text('搜索'),
+            ),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Text(_reGeocode?.toString() ?? ''),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

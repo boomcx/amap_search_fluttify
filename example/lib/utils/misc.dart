@@ -1,4 +1,4 @@
-import 'package:decorated_flutter/decorated_flutter.dart';
+import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 Future<bool> requestPermission() async {
@@ -7,7 +7,10 @@ Future<bool> requestPermission() async {
   if (status == PermissionStatus.granted) {
     return true;
   } else {
-    toast('需要定位权限!');
     return false;
   }
+}
+
+void showToast(BuildContext context, String message) {
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
 }

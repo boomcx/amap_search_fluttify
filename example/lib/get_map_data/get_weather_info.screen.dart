@@ -1,11 +1,13 @@
 import 'package:amap_search_fluttify/amap_search_fluttify.dart';
-import 'package:decorated_flutter/decorated_flutter.dart';
 import 'package:flutter/material.dart';
 
-/// 获取天气数据
+import '../widgets/dimens.dart';
+
 class GetWeatherInfoScreen extends StatefulWidget {
+  const GetWeatherInfoScreen({super.key});
+
   @override
-  _GetWeatherInfoScreenState createState() => _GetWeatherInfoScreenState();
+  State<GetWeatherInfoScreen> createState() => _GetWeatherInfoScreenState();
 }
 
 class _GetWeatherInfoScreenState extends State<GetWeatherInfoScreen> {
@@ -18,24 +20,26 @@ class _GetWeatherInfoScreenState extends State<GetWeatherInfoScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(title: const Text('获取天气数据')),
-      body: DecoratedColumn(
+      body: Padding(
         padding: const EdgeInsets.all(kSpace16),
-        children: <Widget>[
-          TextFormField(
-            controller: _keywordController,
-            decoration: const InputDecoration(hintText: '输入地区'),
-          ),
-          RaisedButton(
-            onPressed: () async {
-              final district = await AmapSearch.instance
-                  .searchDistrict(_keywordController.text);
-              _district = district.toString();
-              setState(() {});
-            },
-            child: const Text('搜索'),
-          ),
-          Expanded(child: SingleChildScrollView(child: Text(_district))),
-        ],
+        child: Column(
+          children: <Widget>[
+            TextFormField(
+              controller: _keywordController,
+              decoration: const InputDecoration(hintText: '输入地区'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                final district = await AmapSearch.instance
+                    .searchDistrict(_keywordController.text);
+                _district = district.toString();
+                setState(() {});
+              },
+              child: const Text('搜索'),
+            ),
+            Expanded(child: SingleChildScrollView(child: Text(_district))),
+          ],
+        ),
       ),
     );
   }

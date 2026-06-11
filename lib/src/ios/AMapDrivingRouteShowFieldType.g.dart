@@ -17,15 +17,24 @@ enum AMapDrivingRouteShowFieldType {
 extension AMapDrivingRouteShowFieldTypeToX on AMapDrivingRouteShowFieldType {
   int toValue() {
     switch (this) {
-      case AMapDrivingRouteShowFieldType.AMapDrivingRouteShowFieldTypeNone: return 1<<0;
-      case AMapDrivingRouteShowFieldType.AMapDrivingRouteShowFieldTypeCost: return 1<<1;
-      case AMapDrivingRouteShowFieldType.AMapDrivingRouteShowFieldTypeTmcs: return 1<<2;
-      case AMapDrivingRouteShowFieldType.AMapDrivingRouteShowFieldTypeNavi: return 1<<3;
-      case AMapDrivingRouteShowFieldType.AMapDrivingRouteShowFieldTypeCities: return 1<<4;
-      case AMapDrivingRouteShowFieldType.AMapDrivingRouteShowFieldTypePolyline: return 1<<5;
-      case AMapDrivingRouteShowFieldType.AMapDrivingRouteShowFieldTypeNewEnergy: return 1<<6;
-      case AMapDrivingRouteShowFieldType.AMapDrivingRouteShowFieldTypeAll: return ~0;
-      default: return 0;
+      case AMapDrivingRouteShowFieldType.AMapDrivingRouteShowFieldTypeNone:
+        return 1;
+      case AMapDrivingRouteShowFieldType.AMapDrivingRouteShowFieldTypeCost:
+        return 2;
+      case AMapDrivingRouteShowFieldType.AMapDrivingRouteShowFieldTypeTmcs:
+        return 4;
+      case AMapDrivingRouteShowFieldType.AMapDrivingRouteShowFieldTypeNavi:
+        return 8;
+      case AMapDrivingRouteShowFieldType.AMapDrivingRouteShowFieldTypeCities:
+        return 16;
+      case AMapDrivingRouteShowFieldType.AMapDrivingRouteShowFieldTypePolyline:
+        return 32;
+      case AMapDrivingRouteShowFieldType.AMapDrivingRouteShowFieldTypeNewEnergy:
+        return 64;
+      case AMapDrivingRouteShowFieldType.AMapDrivingRouteShowFieldTypeAll:
+        return -1;
+      default:
+        return 0;
     }
   }
 }
@@ -33,15 +42,27 @@ extension AMapDrivingRouteShowFieldTypeToX on AMapDrivingRouteShowFieldType {
 extension AMapDrivingRouteShowFieldTypeFromX on int {
   AMapDrivingRouteShowFieldType toAMapDrivingRouteShowFieldType() {
     switch (this) {
-      case 1<<0: return AMapDrivingRouteShowFieldType.AMapDrivingRouteShowFieldTypeNone;
-      case 1<<1: return AMapDrivingRouteShowFieldType.AMapDrivingRouteShowFieldTypeCost;
-      case 1<<2: return AMapDrivingRouteShowFieldType.AMapDrivingRouteShowFieldTypeTmcs;
-      case 1<<3: return AMapDrivingRouteShowFieldType.AMapDrivingRouteShowFieldTypeNavi;
-      case 1<<4: return AMapDrivingRouteShowFieldType.AMapDrivingRouteShowFieldTypeCities;
-      case 1<<5: return AMapDrivingRouteShowFieldType.AMapDrivingRouteShowFieldTypePolyline;
-      case 1<<6: return AMapDrivingRouteShowFieldType.AMapDrivingRouteShowFieldTypeNewEnergy;
-      case ~0: return AMapDrivingRouteShowFieldType.AMapDrivingRouteShowFieldTypeAll;
-      default: return AMapDrivingRouteShowFieldType.values[this + 1<<0];
+      case 1:
+        return AMapDrivingRouteShowFieldType.AMapDrivingRouteShowFieldTypeNone;
+      case 2:
+        return AMapDrivingRouteShowFieldType.AMapDrivingRouteShowFieldTypeCost;
+      case 4:
+        return AMapDrivingRouteShowFieldType.AMapDrivingRouteShowFieldTypeTmcs;
+      case 8:
+        return AMapDrivingRouteShowFieldType.AMapDrivingRouteShowFieldTypeNavi;
+      case 16:
+        return AMapDrivingRouteShowFieldType
+            .AMapDrivingRouteShowFieldTypeCities;
+      case 32:
+        return AMapDrivingRouteShowFieldType
+            .AMapDrivingRouteShowFieldTypePolyline;
+      case 64:
+        return AMapDrivingRouteShowFieldType
+            .AMapDrivingRouteShowFieldTypeNewEnergy;
+      case -1:
+        return AMapDrivingRouteShowFieldType.AMapDrivingRouteShowFieldTypeAll;
+      default:
+        return AMapDrivingRouteShowFieldType.values[this + 1];
     }
   }
 }

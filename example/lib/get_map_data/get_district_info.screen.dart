@@ -1,11 +1,13 @@
 import 'package:amap_search_fluttify/amap_search_fluttify.dart';
-import 'package:decorated_flutter/decorated_flutter.dart';
 import 'package:flutter/material.dart';
 
-/// 获取行政区划数据
+import '../widgets/dimens.dart';
+
 class GetDistrictInfoScreen extends StatefulWidget {
+  const GetDistrictInfoScreen({super.key});
+
   @override
-  _GetDistrictInfoScreenState createState() => _GetDistrictInfoScreenState();
+  State<GetDistrictInfoScreen> createState() => _GetDistrictInfoScreenState();
 }
 
 class _GetDistrictInfoScreenState extends State<GetDistrictInfoScreen> {
@@ -18,27 +20,29 @@ class _GetDistrictInfoScreenState extends State<GetDistrictInfoScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(title: const Text('获取行政区划数据')),
-      body: DecoratedColumn(
+      body: Padding(
         padding: const EdgeInsets.all(kSpace16),
-        children: <Widget>[
-          TextFormField(
-            controller: _keywordController,
-            decoration: const InputDecoration(hintText: '输入地区'),
-          ),
-          RaisedButton(
-            onPressed: () async {
-              final district = await AmapSearch.instance.searchDistrict(
-                _keywordController.text,
-                showBoundary: true,
-                showChild: true,
-              );
-              _district = district.toString();
-              setState(() {});
-            },
-            child: const Text('搜索'),
-          ),
-          Expanded(child: SingleChildScrollView(child: Text(_district))),
-        ],
+        child: Column(
+          children: <Widget>[
+            TextFormField(
+              controller: _keywordController,
+              decoration: const InputDecoration(hintText: '输入地区'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                final district = await AmapSearch.instance.searchDistrict(
+                  _keywordController.text,
+                  showBoundary: true,
+                  showChild: true,
+                );
+                _district = district.toString();
+                setState(() {});
+              },
+              child: const Text('搜索'),
+            ),
+            Expanded(child: SingleChildScrollView(child: Text(_district))),
+          ],
+        ),
       ),
     );
   }

@@ -3,15 +3,14 @@ import 'package:flutter/material.dart';
 const SPACE_NORMAL = SizedBox(width: 8, height: 8);
 const kDividerTiny = Divider(height: 1);
 
-/// 连续设置
 class ContinuousSetting extends StatefulWidget {
   const ContinuousSetting({
-    Key? key,
+    super.key,
     required this.head,
     required this.onChanged,
     this.min = 0,
     this.max = 1,
-  }) : super(key: key);
+  });
 
   final String head;
   final ValueChanged<double> onChanged;
@@ -19,7 +18,7 @@ class ContinuousSetting extends StatefulWidget {
   final double max;
 
   @override
-  _ContinuousSettingState createState() => _ContinuousSettingState();
+  State<ContinuousSetting> createState() => _ContinuousSettingState();
 }
 
 class _ContinuousSettingState extends State<ContinuousSetting> {
@@ -42,7 +41,7 @@ class _ContinuousSettingState extends State<ContinuousSetting> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(widget.head, style: Theme.of(context).textTheme.subtitle1),
+          Text(widget.head, style: Theme.of(context).textTheme.titleMedium),
           SPACE_NORMAL,
           Slider(
             value: _value,
@@ -63,14 +62,13 @@ class _ContinuousSettingState extends State<ContinuousSetting> {
   }
 }
 
-/// 离散设置
 class DiscreteSetting extends StatelessWidget {
   const DiscreteSetting({
-    Key? key,
+    super.key,
     required this.head,
     required this.options,
     required this.onSelected,
-  }) : super(key: key);
+  });
 
   final String head;
   final List<String> options;
@@ -84,7 +82,7 @@ class DiscreteSetting extends StatelessWidget {
           onSelected: onSelected,
           child: Padding(
             padding: const EdgeInsets.all(16),
-            child: Text(head, style: Theme.of(context).textTheme.subtitle1),
+            child: Text(head, style: Theme.of(context).textTheme.titleMedium),
           ),
           itemBuilder: (context) {
             return options
@@ -101,13 +99,12 @@ class DiscreteSetting extends StatelessWidget {
   }
 }
 
-/// 颜色设置
 class ColorSetting extends StatelessWidget {
   const ColorSetting({
-    Key? key,
+    super.key,
     required this.head,
     required this.onSelected,
-  }) : super(key: key);
+  });
 
   final String head;
   final ValueChanged<Color?> onSelected;
@@ -121,14 +118,11 @@ class ColorSetting extends StatelessWidget {
         Color? color;
         switch (value) {
           case '绿色':
-            color = Colors.green.withOpacity(0.6);
-            break;
+            color = Colors.green.withValues(alpha: 0.6);
           case '红色':
-            color = Colors.red.withOpacity(0.6);
-            break;
+            color = Colors.red.withValues(alpha: 0.6);
           case '黄色':
-            color = Colors.yellow.withOpacity(0.6);
-            break;
+            color = Colors.yellow.withValues(alpha: 0.6);
         }
 
         onSelected(color);
@@ -137,21 +131,20 @@ class ColorSetting extends StatelessWidget {
   }
 }
 
-/// 二元设置
 class BooleanSetting extends StatefulWidget {
   const BooleanSetting({
-    Key? key,
+    super.key,
     required this.head,
     required this.onSelected,
     this.selected = false,
-  }) : super(key: key);
+  });
 
   final String head;
   final ValueChanged<bool> onSelected;
   final bool selected;
 
   @override
-  _BooleanSettingState createState() => _BooleanSettingState();
+  State<BooleanSetting> createState() => _BooleanSettingState();
 }
 
 class _BooleanSettingState extends State<BooleanSetting> {
@@ -184,16 +177,15 @@ class _BooleanSettingState extends State<BooleanSetting> {
   }
 }
 
-/// 输入文字
 class TextSetting extends StatelessWidget {
   final String leadingString;
   final String hintString;
 
   const TextSetting({
-    Key? key,
+    super.key,
     required this.leadingString,
     required this.hintString,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
