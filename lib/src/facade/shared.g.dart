@@ -5,8 +5,8 @@ import 'package:amap_search_fluttify/src/android/android.export.g.dart';
 
 const kAmapSearchFluttifyMessageCodec = FluttifyMessageCodec(
   tag: 'amap_search_fluttify',
-  androidCaster: AmapSearchFluttifyAndroidAs,
-  iosCaster: AmapSearchFluttifyIOSAs,
+  // androidCaster: AmapSearchFluttifyAndroidAs,
+  // iosCaster: AmapSearchFluttifyIOSAs,
 );
 const kAmapSearchFluttifyMethodCodec = StandardMethodCodec(
   kAmapSearchFluttifyMessageCodec,
