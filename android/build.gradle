@@ -61,6 +61,6 @@ dependencies {
     implementation "androidx.annotation:annotation:1.7.0"
     implementation "androidx.appcompat:appcompat:1.6.1"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.0"
-    compileOnly project(path: ":foundation_fluttify", configuration: "default")
+    compileOnly project(path: ":foundation_fluttify")
     api "com.amap.api:search:9.2.0"
 }
