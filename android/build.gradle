@@ -1,15 +1,11 @@
-// 1. 【删除】group 和 version 声明
-// Flutter 插件的版本由根目录的 pubspec.yaml 统一管理
+group 'me.yohom.amap_search_fluttify'
+version '1.0-SNAPSHOT'
 
-// 2. 【使用】声明式插件语法 (替代旧的 apply plugin)
-plugins {
-    id "com.android.library"
-    id "org.jetbrains.kotlin.android"
-}
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
 
-// 3. 【配置】Android 构建参数
 android {
-    namespace "me.yohom.amap_search_fluttify"
+    namespace 'me.yohom.amap_search_fluttify'
     compileSdk 34
 
     compileOptions {
@@ -18,36 +14,25 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = '17'
     }
 
     sourceSets {
-        main.java.srcDirs += "src/main/kotlin"
-        main.jniLibs.srcDir "libs"
+        main.java.srcDirs += 'src/main/kotlin'
+        main.jniLibs.srcDir 'libs'
     }
-
     defaultConfig {
         minSdk 21
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-
     lint {
-        disable "InvalidPackage"
+        disable 'InvalidPackage'
     }
-
     packaging {
         resources {
-            // 修正 merges 语法（Gradle 8.0+ 推荐使用 from）
-            merges += [
-                "res/values/values.xml", 
-                "AndroidManifest.xml", 
-                "R.txt", 
-                "classes.jar", 
-                "proguard.txt"
-            ]
+            merges += ['res/values/values.xml', 'AndroidManifest.xml', 'R.txt', 'classes.jar', 'proguard.txt']
         }
     }
-
     buildTypes {
         release {
             consumerProguardFiles "proguard-rules.pro"
@@ -55,12 +40,11 @@ android {
     }
 }
 
-// 4. 【依赖】
 dependencies {
-    implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"])
-    implementation "androidx.annotation:annotation:1.7.0"
-    implementation "androidx.appcompat:appcompat:1.6.1"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.0"
-    compileOnly project(path: ":foundation_fluttify")
-    api "com.amap.api:search:9.2.0"
+    implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
+    implementation 'androidx.annotation:annotation:1.7.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.20"
+    compileOnly rootProject.findProject(":foundation_fluttify")
+    api 'com.amap.api:search:9.2.0'
 }
